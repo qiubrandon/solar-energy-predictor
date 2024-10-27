@@ -4,7 +4,7 @@ from src.training import train_model
 
 @pytest.fixture
 
-def test_data(tempDir):
+def mock_data(tmpdir):
     data = {
         'irradiance': [500,600,700,800],
         'temperature': [25,30,28,26],
@@ -12,7 +12,7 @@ def test_data(tempDir):
         'energy_output':[75,85,95,105],
     }
     df = pd.DataFrame(data)
-    file_path = tempDir.join("test_data.csv")
+    file_path = tmpdir.join("a.csv")
     df.to_csv(file_path, index=False)
     return file_path
 
