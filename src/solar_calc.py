@@ -22,19 +22,36 @@ def calculate_solar_declination(day_of_year):
 def calculate_hour_angle(hour):
     return 15 * (hour - 12)
 
-def calculate_solar_zenith_angle(latitude, day_of_year, hour):
-    declination = calculate_solar_declination(day_of_year)
-    hour_angle = calculate_hour_angle(hour)
-    
-    latitude_rad = np.radians(latitude)
-    declination_rad = np.radians(declination)
-    hour_angle_rad = np.radians(hour_angle)
+from math import cos, sin, acos, radians, degrees
+from datetime import datetime, timedelta
 
-    cos_theta = (np.sin(declination_rad) * np.sin(latitude_rad) +
-                 np.cos(declination_rad) * np.cos(latitude_rad) * np.cos(hour_angle_rad))
+def calculate_solar_zenith_angle(lat, lon, date_time):
+    """
+    Calculate the Solar Zenith Angle given latitude, longitude, and datetime.
+    :param lat: Latitude in degrees
+    :param lon: Longitude in degrees
+    :param date_time: Datetime object
+    :return: Solar Zenith Angle in degrees
+    """
+    utc_time = date_time - timedelta(minutes=date_time.utcoffset().total_seconds() / 60) if date_time.utcoffset() else date_time
+    day_of_year = utc_time.timetuple().tm_yday
     
-    zenith_angle = np.degrees(np.arccos(cos_theta))
-    return zenith_angle
+    declination = 23.45 * sin(radians(360 * (284 + day_of_year) / 365))
+    
+    time_correction = 4 * lon + 60 * utc_time.utcoffset().total_seconds() / 3600 if utc_time.utcoffset() else 4 * lon
+    
+    solar_noon = 12 - time_correction / 60
+    
+    current_time = utc_time.hour + utc_time.minute / 60
+    hour_angle = 15 * (current_time - solar_noon)
+    
+    zenith_angle = acos(
+        sin(radians(lat)) * sin(radians(declination)) +
+        cos(radians(lat)) * cos(radians(declination)) * cos(radians(hour_angle))
+    )
+    
+    return degrees(zenith_angle)
+
 
 def calculate_clear_sky_ghi(latitude, day_of_year, hour):
     zenith_angle = calculate_solar_zenith_angle(latitude, day_of_year, hour)

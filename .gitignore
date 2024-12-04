@@ -1,3 +1,5 @@
 server.py
 __pycache__/
 data/config.py
+data/solar_data
+config.py
