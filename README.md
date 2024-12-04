@@ -42,13 +42,7 @@ Visit http://127.0.0.1:8000/ in your browser to use the web interface.
 ### **6. Use the Trained Model**
 If you already have a trained model, you can use it to make predictions. Place your model in the path specified in MODEL_PATH, and the server will load it for inference.
 
-<iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/6nMIsMGDJGY?si=wGJRGFFrfvnCtItH" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-</iframe>
+
 
 ### **Known Issues**
 Some features may not work as expected.
