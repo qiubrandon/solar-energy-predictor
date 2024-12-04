@@ -1,6 +1,6 @@
 # Solar Energy Predictor
 
-Welcome to the **Solar Energy Predictor** project! Its not very flashy nor does it work super well, but it can be helpful for solar farmers, if they want to predict solar irradiance (GHI). 🚀
+Welcome to the **Solar Energy Predictor** project! Its not very flashy nor does it explore any further robust prediction, but it can be helpful for solar farmers, if they want to predict solar irradiance (GHI). 🚀
 
 ---
 
@@ -42,17 +42,20 @@ Visit http://127.0.0.1:8000/ in your browser to use the web interface.
 ### **6. Use the Trained Model**
 If you already have a trained model, you can use it to make predictions. Place your model in the path specified in MODEL_PATH, and the server will load it for inference.
 
+<iframe width="560" height="315" 
+        src="https://www.youtube.com/embed/6nMIsMGDJGY?si=wGJRGFFrfvnCtItH" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+</iframe>
+
 ### **Known Issues**
 Some features may not work as expected.
 Testing is incomplete, and certain edge cases might not be handled.
 The model’s performance depends on the quality of the dataset and preprocessing.
-If you encounter problems, feel free to explore and tweak the code—it’s a great opportunity to contribute!
+If you encounter problems, feel free to explore and tweak the code
 
-### Contributing
-This project is open for collaboration. If you have suggestions or fixes, feel free to fork the repo and submit a pull request.
-
-### Contact
-Questions or feedback? Reach out to the project owner. Let’s build something amazing together! 🌞
 
 
 
