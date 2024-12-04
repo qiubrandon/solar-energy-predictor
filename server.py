@@ -70,14 +70,11 @@ async def predict(lat: float, lon: float, days: int = Query(1, ge=1, le=7)):
     features['hour'] = pd.to_datetime(features['date_time']).dt.hour
     features = features[features['hour'] % 6 == 0]
 
-    # Drop `date_time` column before prediction
     features_for_model = features.drop(columns=["date_time", "hour"])
 
-    # Make predictions
     predictions = model.predict(features_for_model)
     features['predicted_GHI'] = predictions
 
-    # Remove temporary 'hour' column before returning data
     features = features.drop(columns=["hour"])
 
 
