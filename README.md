@@ -42,7 +42,7 @@ Visit http://127.0.0.1:8000/ in your browser to use the web interface.
 ### **6. Use the Trained Model**
 If you already have a trained model, you can use it to make predictions. Place your model in the path specified in MODEL_PATH, and the server will load it for inference.
 
-[Video Preview](assets/solar_preview.mp4)
+[Video Preview](https://www.youtube.com/watch?v=6nMIsMGDJGY)
 
 
 ### **Known Issues**
