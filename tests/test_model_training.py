@@ -1,21 +1,16 @@
-import pandas as pd
 import pytest
 from src.training import train_model
+from config import PATH
 
 @pytest.fixture
+def real_dataset():
+    # Provide the path to your real dataset CSV file
+    return PATH # Replace this with the actual file path
 
-def mock_data(tmpdir):
-    data = {
-        'irradiance': [500,600,700,800],
-        'temperature': [25,30,28,26],
-        'humidity': [40,50,45,60],
-        'energy_output':[75,85,95,105],
-    }
-    df = pd.DataFrame(data)
-    file_path = tmpdir.join("a.csv")
-    df.to_csv(file_path, index=False)
-    return file_path
+def test_train_model_real_dataset(real_dataset):
+    # Train the model using the real dataset
+    model, mae = train_model(datapath=real_dataset)
 
-def test_train_model(mock_data):
-    model, mae = train_model(mock_data)
-    assert mae < 10
+    # Assertions to validate the training process
+    assert model is not None, "Model should be trained successfully"
+    assert mae < 50, f"Model MAE too high: {mae}"  # Adjust threshold based on your expectations

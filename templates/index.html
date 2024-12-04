@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Energy Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin: 20px auto;
+            text-align: center;
+        }
+        label, input, button {
+            margin: 5px;
+            font-size: 1.2em;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        #results {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solar Energy Predictor</h1>
+    <form id="predictionForm">
+        <label for="days">Days:</label>
+        <input type="number" id="days" name="days" min="1" max="7" value="1" required>
+        <button type="submit">Get Predictions</button>
+    </form>
+    <div id="results"></div>
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "<p>Fetching location...</p>";
+
+            try {
+                // Get user location
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const days = document.getElementById("days").value;
+
+                // Fetch predictions from the server
+                resultsDiv.innerHTML = "<p>Loading predictions...</p>";
+                const response = await fetch(`/predict?lat=${lat}&lon=${lon}&days=${days}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch predictions");
+                }
+                const data = await response.json();
+
+                // Generate a table to display the predictions
+                let tableHtml = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Temperature (°C)</th>
+                                <th>Humidity (%)</th>
+                                <th>Cloud Type</th>
+                                <th>Solar Zenith Angle (°)</th>
+                                <th>Pressure (mb)</th>
+                                <th>Wind Speed (kph)</th>
+                                <th>Predicted GHI (W/m²) ☀️</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                data.predictions.forEach(prediction => {
+                    tableHtml += `
+                        <tr>
+                            <td>${prediction.date_time || "N/A"}</td>
+                            <td>${prediction.Temperature}</td>
+                            <td>${prediction["Relative Humidity"]}</td>
+                            <td>${prediction["Cloud Type"]}</td>
+                            <td>${prediction["Solar Zenith Angle"].toFixed(2)}</td>
+                            <td>${prediction.Pressure}</td>
+                            <td>${prediction["Wind Speed"]}</td>
+                            <td>${prediction.predicted_GHI.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+                tableHtml += `</tbody></table>`;
+
+                // Display the results
+                resultsDiv.innerHTML = tableHtml;
+
+            } catch (error) {
+                // Display error message
+                resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
